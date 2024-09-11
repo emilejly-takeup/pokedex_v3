@@ -22,7 +22,7 @@ export function PokemonCard({ pokemon, isCurrentIndex, isShiny, onToggleShiny, i
     >
       {/* Nom et catégorie */}
       <div>
-        <h2 className="text-2xl font-bold">{pokemon.name?.fr || "Inconnu"}</h2>
+        <h2 className="text-2xl font-bold">{pokemon.name?.fr || "???"}</h2>
         <p className="mb-3 text-sm">
           <strong>{pokemon.category || "Inconnu"}</strong>
         </p>

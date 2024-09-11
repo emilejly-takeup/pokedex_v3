@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { fetchData } from "./api/api";
 import { NavigationButton } from "./components/NavigationButton";
 import { PokemonCard } from "./components/PokemonCard";
+import { StatsChart } from "./components/StatsChart";
 import PokemonData from "./interfaces/PokemonData";
 
 export default function App() {
@@ -84,6 +85,7 @@ export default function App() {
             onToggleShiny={() => toggleShiny(currentIndex)}
             isHidden={false}
           />
+          <StatsChart pokemon={data[currentIndex]} />
           <NavigationButton text="→" onClick={handleNext} />
 
           {/* Rendu des cartes de droite */}
