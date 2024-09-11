@@ -45,14 +45,14 @@ export default function App() {
 
   // Configuration des cartes
   const CARDSCONFIG = [
-    { indexOffset: -3, isHidden: true, isShinyOverride: true },
-    { indexOffset: -3, isHidden: true },
-    { indexOffset: -2, isHidden: false },
-    { indexOffset: -1, isHidden: false },
-    { indexOffset: 1, isHidden: false },
-    { indexOffset: 2, isHidden: false },
-    { indexOffset: 3, isHidden: true },
-    { indexOffset: 3, isHidden: true, isShinyOverride: true },
+    { indexOffset: -3, isShinyOverride: true },
+    { indexOffset: -3 },
+    { indexOffset: -2 },
+    { indexOffset: -1 },
+    { indexOffset: 1 },
+    { indexOffset: 2 },
+    { indexOffset: 3 },
+    { indexOffset: 3, isShinyOverride: true },
   ];
 
   return (
@@ -60,7 +60,7 @@ export default function App() {
       {data && data.length > 0 ? (
         <div className="flex items-center gap-8">
           {/* Rendu des cartes de gauche */}
-          {CARDSCONFIG.slice(0, sliceAtIndex).map(({ indexOffset, isHidden, isShinyOverride }, id) => {
+          {CARDSCONFIG.slice(0, sliceAtIndex).map(({ indexOffset, isShinyOverride }, id) => {
             const resolvedIndex = resolveIndex(indexOffset);
             const isShiny = isShinyOverride !== undefined ? isShinyOverride : shinyState[resolvedIndex];
             return (
@@ -70,7 +70,7 @@ export default function App() {
                 pokemon={data[resolvedIndex]}
                 isShiny={isShiny}
                 onToggleShiny={() => toggleShiny(resolvedIndex)}
-                isHidden={isHidden}
+                isHidden={true}
               />
             );
           })}
@@ -87,7 +87,7 @@ export default function App() {
           <NavigationButton text="→" onClick={handleNext} />
 
           {/* Rendu des cartes de droite */}
-          {CARDSCONFIG.slice(sliceAtIndex).map(({ indexOffset, isHidden, isShinyOverride }, id) => {
+          {CARDSCONFIG.slice(sliceAtIndex).map(({ indexOffset, isShinyOverride }, id) => {
             const resolvedIndex = resolveIndex(indexOffset);
             const isShiny = isShinyOverride !== undefined ? isShinyOverride : shinyState[resolvedIndex];
             return (
@@ -97,7 +97,7 @@ export default function App() {
                 pokemon={data[resolvedIndex]}
                 isShiny={isShiny}
                 onToggleShiny={() => toggleShiny(resolvedIndex)}
-                isHidden={isHidden}
+                isHidden={true}
               />
             );
           })}
