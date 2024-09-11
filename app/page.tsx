@@ -8,7 +8,7 @@ import PokemonData from "./interfaces/PokemonData";
 
 export default function App() {
   const [data, setData] = useState<PokemonData[]>([]);
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [currentIndex, setCurrentIndex] = useState<number>(1);
   const [shinyState, setShinyState] = useState<boolean[]>([]);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export default function App() {
   return (
     <div className="text-center h-screen content-center mx-auto max-w-fit">
       {data && data.length > 0 ? (
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-2">
           {/* Rendu des cartes de gauche */}
           {CARDSCONFIG.slice(0, sliceAtIndex).map(({ indexOffset, isShinyOverride }, id) => {
             const resolvedIndex = resolveIndex(indexOffset);

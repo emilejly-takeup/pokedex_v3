@@ -16,7 +16,7 @@ export function PokemonCard({ pokemon, isCurrentIndex, isShiny, onToggleShiny, i
 
   return (
     <div
-      className={`p-5 w-[500px] h-[800px] mx-auto flex-col justify-evenly bg-zinc-100 rounded-lg ${isHidden ? "hidden" : "flex"} ${
+      className={`p-5 w-[400px] h-[700px] mx-auto flex-col justify-evenly bg-zinc-100 rounded-lg ${isHidden ? "hidden" : "flex"} ${
         isCurrentIndex ? "" : "opacity-70"
       }`}
     >
