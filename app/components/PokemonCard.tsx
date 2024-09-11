@@ -34,6 +34,7 @@ export function PokemonCard({ pokemon, isCurrentIndex, isShiny, onToggleShiny, i
       <div className="relative">
         <Image
           className="w-72 h-auto mt-8"
+          priority={true}
           width={288}
           height={200}
           src={isShiny && pokemon.sprites?.shiny ? pokemon.sprites.shiny : pokemon.sprites?.regular || "https://via.placeholder.com/100"}
