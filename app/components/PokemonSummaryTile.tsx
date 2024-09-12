@@ -13,7 +13,7 @@ export function PokemonSummaryTile({ pokemon }: Props) {
   return (
     <div className="bg-zinc-100 p-2 rounded-lg relative">
       <div className="absolute top-1/3 left-8">
-        {/* Nom et catégorie */}
+        {/* Index du pokémon */}
         <p className="italic font-semibold">#{pokemon.pokedex_id}</p>
       </div>
       <div>

@@ -1,6 +1,6 @@
 interface Props {
   text: string;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  onClick: () => void;
 }
 
 export function NavigationButton({ text, onClick }: Props) {

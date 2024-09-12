@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { fetchData } from "./api/api";
-import { CacheLoaderTile } from "./components/CacheLoaderTile";
+import { CacheLoader } from "./components/CacheLoader";
 import { NavigationButton } from "./components/NavigationButton";
 import { PokemonDetailsTile } from "./components/PokemonDetailsTile";
 import { PokemonSpriteTile } from "./components/PokemonSpriteTile";
@@ -28,12 +28,8 @@ export default function App() {
       });
   }, []);
 
-  function handlePrev() {
-    return data && setCurrentIndex((currentIndex) => (currentIndex === 0 ? data.length - 1 : currentIndex - 1));
-  }
-
-  function handleNext() {
-    return data && setCurrentIndex((currentIndex) => (currentIndex === data.length - 1 ? 0 : currentIndex + 1));
+  if (!data) {
+    return <p>Chargement ...</p>;
   }
 
   const toggleShiny = (index: number) => {
@@ -45,10 +41,10 @@ export default function App() {
   }
 
   return (
-    <div className="text-center h-screen content-center mx-auto max-w-fit">
-      {data && data.length > 0 ? (
+    <div className="text-center h-screen content-center mx-auto max-w-fit select-none">
+      {data.length > 0 ? (
         <div className="flex items-center gap-2">
-          <NavigationButton text="←" onClick={handlePrev} />
+          <NavigationButton text="←" onClick={() => setCurrentIndex(resolveIndex(-1))} />
 
           {/* Rendu des tiles */}
           <div className="flex flex-wrap items-center gap-2">
@@ -65,11 +61,11 @@ export default function App() {
             </div>
           </div>
 
-          <NavigationButton text="→" onClick={handleNext} />
+          <NavigationButton text="→" onClick={() => setCurrentIndex(resolveIndex(1))} />
 
           {/* Pré-rendu des cartes précedentes et suivantes */}
           {cacheLoaderIndexes.map((index) => (
-            <CacheLoaderTile pokemon={data[resolveIndex(index)]} key={index} />
+            <CacheLoader pokemon={data[resolveIndex(index)]} key={index} />
           ))}
         </div>
       ) : (

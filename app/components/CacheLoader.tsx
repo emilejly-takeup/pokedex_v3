@@ -5,7 +5,7 @@ interface Props {
   pokemon: PokemonData;
 }
 
-export function CacheLoaderTile({ pokemon }: Props) {
+export function CacheLoader({ pokemon }: Props) {
   if (!pokemon) {
     return <p>Chargement...</p>;
   }
