@@ -15,6 +15,8 @@ export default function App() {
   const [currentIndex, setCurrentIndex] = useState<number>(1);
   const [shinyState, setShinyState] = useState<boolean[]>([]);
 
+  const cacheLoaderIndexes = [-3, -2, -1, 1, 2, 3];
+
   useEffect(() => {
     fetchData()
       .then((data: PokemonData[]) => {
@@ -66,12 +68,9 @@ export default function App() {
           <NavigationButton text="→" onClick={handleNext} />
 
           {/* Pré-rendu des cartes précedentes et suivantes */}
-          <CacheLoaderTile pokemon={data[resolveIndex(-3)]} />
-          <CacheLoaderTile pokemon={data[resolveIndex(-2)]} />
-          <CacheLoaderTile pokemon={data[resolveIndex(-1)]} />
-          <CacheLoaderTile pokemon={data[resolveIndex(1)]} />
-          <CacheLoaderTile pokemon={data[resolveIndex(2)]} />
-          <CacheLoaderTile pokemon={data[resolveIndex(3)]} />
+          {cacheLoaderIndexes.map((index) => (
+            <CacheLoaderTile pokemon={data[resolveIndex(index)]} key={index} />
+          ))}
         </div>
       ) : (
         <p>Chargement...</p>

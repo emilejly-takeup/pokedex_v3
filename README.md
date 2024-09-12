@@ -8,4 +8,4 @@ Prochaines features :
 - Vue globale du pokedex
 - Refonte du système de navigation
 
-Ce projet utilise l'API publique https://tyradex.vercel.app/docs crée par Yarkis & Ashzuu.
+Ce projet utilise l'API publique https://tyradex.vercel.app/docs créée par Yarkis & Ashzuu.
