@@ -13,7 +13,7 @@ export function PokemonSpriteTile({ pokemon, isShiny, onToggleShiny }: Props) {
   }
 
   return (
-    <div className={"w-[400px] h-fit justify-evenly p-2 bg-zinc-100 rounded-lg relative"}>
+    <div className={"w-[344px] h-fit justify-evenly p-2 bg-zinc-100 rounded-lg relative"}>
       {/* Image + Shiny */}
       <div>
         <Image
