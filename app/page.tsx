@@ -46,14 +46,6 @@ export default function App() {
     <div className="text-center h-screen content-center mx-auto max-w-fit">
       {data && data.length > 0 ? (
         <div className="flex items-center gap-2">
-          {/* Pré-rendu des cartes précedentes et suivantes */}
-          <CacheLoaderTile pokemon={data[resolveIndex(-3)]} />
-          <CacheLoaderTile pokemon={data[resolveIndex(-2)]} />
-          <CacheLoaderTile pokemon={data[resolveIndex(-1)]} />
-          <CacheLoaderTile pokemon={data[resolveIndex(1)]} />
-          <CacheLoaderTile pokemon={data[resolveIndex(2)]} />
-          <CacheLoaderTile pokemon={data[resolveIndex(3)]} />
-
           <NavigationButton text="←" onClick={handlePrev} />
 
           {/* Rendu des tiles */}
@@ -72,6 +64,14 @@ export default function App() {
           </div>
 
           <NavigationButton text="→" onClick={handleNext} />
+
+          {/* Pré-rendu des cartes précedentes et suivantes */}
+          <CacheLoaderTile pokemon={data[resolveIndex(-3)]} />
+          <CacheLoaderTile pokemon={data[resolveIndex(-2)]} />
+          <CacheLoaderTile pokemon={data[resolveIndex(-1)]} />
+          <CacheLoaderTile pokemon={data[resolveIndex(1)]} />
+          <CacheLoaderTile pokemon={data[resolveIndex(2)]} />
+          <CacheLoaderTile pokemon={data[resolveIndex(3)]} />
         </div>
       ) : (
         <p>Chargement...</p>
