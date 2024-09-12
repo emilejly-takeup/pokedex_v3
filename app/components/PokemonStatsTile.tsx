@@ -8,9 +8,9 @@ interface Props {
   pokemon: PokemonData;
 }
 
-export const StatsChart: React.FC<Props> = ({ pokemon }) => {
+export const PokemonStatsTile: React.FC<Props> = ({ pokemon }) => {
   if (!pokemon) {
-    return;
+    return <p>Chargement...</p>;
   }
 
   const stats = pokemon.stats
@@ -54,8 +54,7 @@ export const StatsChart: React.FC<Props> = ({ pokemon }) => {
   };
 
   return (
-    <div className="bg-zinc-100 p-5 rounded-lg">
-      <h2 className="text-xl font-bold">Statistiques</h2>
+    <div className="bg-zinc-100 h-fit p-2 rounded-lg">
       <Radar data={data} options={options} />
     </div>
   );

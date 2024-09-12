@@ -2,9 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { fetchData } from "./api/api";
+import { CacheLoaderTile } from "./components/CacheLoaderTile";
 import { NavigationButton } from "./components/NavigationButton";
-import { PokemonCard } from "./components/PokemonCard";
-import { StatsChart } from "./components/StatsChart";
+import { PokemonDetailsTile } from "./components/PokemonDetailsTile";
+import { PokemonSummaryTile } from "./components/PokemonSummaryTile";
+import { PokemonSpriteTile } from "./components/PokemonSpriteTile";
+import { PokemonStatsTile } from "./components/PokemonStatsTile";
 import PokemonData from "./interfaces/PokemonData";
 
 export default function App() {
@@ -39,70 +42,32 @@ export default function App() {
     return (currentIndex + wishedIndex + data.length) % data.length;
   }
 
-  // Configuration du slicer de la liste de configuration des cartes.
-  // Permet de déterminer la coupure entre les cartes affichées...
-  // ...à gauche de la carte principale et celles affichées à droite.
-  const sliceAtIndex = 4;
-
-  // Configuration des cartes
-  const CARDSCONFIG = [
-    { indexOffset: -3, isShinyOverride: true },
-    { indexOffset: -3 },
-    { indexOffset: -2 },
-    { indexOffset: -1 },
-    { indexOffset: 1 },
-    { indexOffset: 2 },
-    { indexOffset: 3 },
-    { indexOffset: 3, isShinyOverride: true },
-  ];
-
   return (
     <div className="text-center h-screen content-center mx-auto max-w-fit">
       {data && data.length > 0 ? (
         <div className="flex items-center gap-2">
-          {/* Rendu des cartes de gauche */}
-          {CARDSCONFIG.slice(0, sliceAtIndex).map(({ indexOffset, isShinyOverride }, id) => {
-            const resolvedIndex = resolveIndex(indexOffset);
-            const isShiny = isShinyOverride !== undefined ? isShinyOverride : shinyState[resolvedIndex];
-            return (
-              <PokemonCard
-                key={id}
-                isCurrentIndex={false}
-                pokemon={data[resolvedIndex]}
-                isShiny={isShiny}
-                onToggleShiny={() => toggleShiny(resolvedIndex)}
-                isHidden={true}
-              />
-            );
-          })}
+          {/* Pré-rendu des cartes précedente et suivante */}
+          <CacheLoaderTile pokemon={data[resolveIndex(-1)]} />
+          <CacheLoaderTile pokemon={data[resolveIndex(1)]} />
 
-          {/* Rendu de la carte principale + nav */}
           <NavigationButton text="←" onClick={handlePrev} />
-          <PokemonCard
-            isCurrentIndex={true}
-            pokemon={data[currentIndex]}
-            isShiny={shinyState[currentIndex]}
-            onToggleShiny={() => toggleShiny(currentIndex)}
-            isHidden={false}
-          />
-          <StatsChart pokemon={data[currentIndex]} />
-          <NavigationButton text="→" onClick={handleNext} />
 
-          {/* Rendu des cartes de droite */}
-          {CARDSCONFIG.slice(sliceAtIndex).map(({ indexOffset, isShinyOverride }, id) => {
-            const resolvedIndex = resolveIndex(indexOffset);
-            const isShiny = isShinyOverride !== undefined ? isShinyOverride : shinyState[resolvedIndex];
-            return (
-              <PokemonCard
-                key={id + sliceAtIndex}
-                isCurrentIndex={false}
-                pokemon={data[resolvedIndex]}
-                isShiny={isShiny}
-                onToggleShiny={() => toggleShiny(resolvedIndex)}
-                isHidden={true}
-              />
-            );
-          })}
+          {/* Rendu des tiles */}
+          <div className="flex flex-wrap items-center gap-2">
+            {/* Rendu des tiles haut gauche */}
+            <div className="flex flex-col gap-2">
+              <PokemonSummaryTile pokemon={data[currentIndex]} />
+              <PokemonSpriteTile pokemon={data[currentIndex]} isShiny={shinyState[currentIndex]} onToggleShiny={() => toggleShiny(currentIndex)} />
+            </div>
+
+            {/* Rendu des tiles haut droit */}
+            <div className="flex flex-col gap-2">
+              <PokemonStatsTile pokemon={data[currentIndex]} />
+              <PokemonDetailsTile pokemon={data[currentIndex]} />
+            </div>
+          </div>
+
+          <NavigationButton text="→" onClick={handleNext} />
         </div>
       ) : (
         <p>Chargement...</p>

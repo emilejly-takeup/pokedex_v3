@@ -3,35 +3,21 @@ import PokemonData from "../interfaces/PokemonData";
 
 interface Props {
   pokemon: PokemonData;
-  isCurrentIndex: boolean;
   isShiny: boolean;
   onToggleShiny: () => void;
-  isHidden: boolean;
 }
 
-export function PokemonCard({ pokemon, isCurrentIndex, isShiny, onToggleShiny, isHidden }: Props) {
+export function PokemonSpriteTile({ pokemon, isShiny, onToggleShiny }: Props) {
   if (!pokemon) {
     return <p>Chargement...</p>;
   }
 
   return (
-    <div
-      className={`p-5 w-[400px] h-[700px] mx-auto flex-col justify-evenly bg-zinc-100 rounded-lg ${isHidden ? "hidden" : "flex"} ${
-        isCurrentIndex ? "" : "opacity-70"
-      }`}
-    >
-      {/* Nom et catégorie */}
-      <div>
-        <h2 className="text-2xl font-bold">{pokemon.name?.fr || "???"}</h2>
-        <p className="mb-3 text-sm">
-          <strong>{pokemon.category || "Inconnu"}</strong>
-        </p>
-      </div>
-
+    <div className={"w-[400px] h-fit justify-evenly p-2 bg-zinc-100 rounded-lg relative"}>
       {/* Image + Shiny */}
-      <div className="relative">
+      <div>
         <Image
-          className="mt-8"
+          className="mt-4"
           priority={true}
           width={1200}
           height={1200}
@@ -39,9 +25,9 @@ export function PokemonCard({ pokemon, isCurrentIndex, isShiny, onToggleShiny, i
           alt={`${pokemon.name?.fr || "Inconnu"} sprite`}
         />
 
-        <div className="absolute top-0 right-8">
+        <div className="absolute top-2 right-2">
           {pokemon.sprites?.shiny && (
-            <button className="p-1 text-yellow-500 hover:text-yellow-400 font-bold rounded-full" onClick={onToggleShiny}>
+            <button className="text-yellow-500 hover:text-yellow-400 font-bold rounded-full" onClick={onToggleShiny}>
               {isShiny ? (
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-10">
                   <path
@@ -62,19 +48,6 @@ export function PokemonCard({ pokemon, isCurrentIndex, isShiny, onToggleShiny, i
             </button>
           )}
         </div>
-      </div>
-
-      {/* Types */}
-      <div className="flex justify-center gap-4 mt-8">
-        {pokemon.types?.length > 0 ? (
-          pokemon.types.map((type, index) => (
-            <div key={index} className="text-center">
-              <Image width={40} height={40} src={type.image || "https://via.placeholder.com/50"} alt={type.name || "image"} />
-            </div>
-          ))
-        ) : (
-          <p>???</p>
-        )}
       </div>
     </div>
   );
