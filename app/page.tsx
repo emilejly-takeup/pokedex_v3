@@ -5,9 +5,9 @@ import { fetchData } from "./api/api";
 import { CacheLoaderTile } from "./components/CacheLoaderTile";
 import { NavigationButton } from "./components/NavigationButton";
 import { PokemonDetailsTile } from "./components/PokemonDetailsTile";
-import { PokemonSummaryTile } from "./components/PokemonSummaryTile";
 import { PokemonSpriteTile } from "./components/PokemonSpriteTile";
 import { PokemonStatsTile } from "./components/PokemonStatsTile";
+import { PokemonSummaryTile } from "./components/PokemonSummaryTile";
 import PokemonData from "./interfaces/PokemonData";
 
 export default function App() {
@@ -46,9 +46,13 @@ export default function App() {
     <div className="text-center h-screen content-center mx-auto max-w-fit">
       {data && data.length > 0 ? (
         <div className="flex items-center gap-2">
-          {/* Pré-rendu des cartes précedente et suivante */}
+          {/* Pré-rendu des cartes précedentes et suivantes */}
+          <CacheLoaderTile pokemon={data[resolveIndex(-3)]} />
+          <CacheLoaderTile pokemon={data[resolveIndex(-2)]} />
           <CacheLoaderTile pokemon={data[resolveIndex(-1)]} />
           <CacheLoaderTile pokemon={data[resolveIndex(1)]} />
+          <CacheLoaderTile pokemon={data[resolveIndex(2)]} />
+          <CacheLoaderTile pokemon={data[resolveIndex(3)]} />
 
           <NavigationButton text="←" onClick={handlePrev} />
 
