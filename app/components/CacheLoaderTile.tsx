@@ -24,11 +24,11 @@ export function CacheLoaderTile({ pokemon }: Props) {
       )}
 
       {/* Regular */}
-      <Image width={1200} height={1200} src={pokemon.sprites?.regular || ""} alt={`${pokemon.name?.fr || "Inconnu"} sprite`} />
+      <Image priority={true} width={1200} height={1200} src={pokemon.sprites?.regular || ""} alt={`${pokemon.name?.fr || "Inconnu"} sprite`} />
 
       {/* Shiny */}
       {pokemon.sprites.shiny && (
-        <Image width={1200} height={1200} src={pokemon.sprites.shiny || ""} alt={`${pokemon.name?.fr || "Inconnu"} sprite`} />
+        <Image priority={true} width={1200} height={1200} src={pokemon.sprites.shiny || ""} alt={`${pokemon.name?.fr || "Inconnu"} sprite`} />
       )}
     </div>
   );
