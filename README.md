@@ -4,7 +4,6 @@ React // Typescript // TailwindCSS // Next // axios
 
 Prochaines features :
 
-- Barre de recherche pour fetch un pokemon par son nom
 - Vue globale du pokedex
 - Refonte du système de navigation
 

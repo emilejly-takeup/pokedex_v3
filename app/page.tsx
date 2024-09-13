@@ -16,8 +16,9 @@ export default function App() {
   const [currentIndex, setCurrentIndex] = useState<number>(1);
   const [shinyState, setShinyState] = useState<boolean[]>([]);
   const [searchResults, setSearchResults] = useState<PokemonData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const cacheLoaderIndexes = [-3, -2, -1, 1, 2, 3];
+  const cacheLoaderIndexes = [-3, -2, -1, 0, 1, 2, 3];
 
   useEffect(() => {
     fetchData()
@@ -27,6 +28,9 @@ export default function App() {
       })
       .catch((error: Error) => {
         console.error("Erreur pendant le fetch API du useEffect() : ", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
 
@@ -58,40 +62,48 @@ export default function App() {
 
   return (
     <div className="relative">
-      <DynamicSearchBar onSearch={handleSearch} searchResults={searchResults} onSelectPokemon={handleSelectPokemon} />
-      <div className="text-center h-screen content-center mx-auto max-w-fit">
-        {/* Rendu de la bare de recherche */}
+      {/* Rendu de l'animation de chargement circualaire */}
+      {isLoading ? (
+        <div className="flex justify-center items-center h-screen">
+          <div className="w-32 h-32 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin" />
+        </div>
+      ) : (
+        <div>
+          {/* Rendu de la barre de recherche */}
+          <DynamicSearchBar onSearch={handleSearch} searchResults={searchResults} onSelectPokemon={handleSelectPokemon} />
+          <div className="text-center h-screen content-center mx-auto max-w-fit">
+            {data.length > 0 && (
+              <div className="flex items-center gap-2 select-none">
+                <NavigationButton text="←" onClick={() => setCurrentIndex(resolveIndex(-1))} />
 
-        {data.length > 0 ? (
-          <div className="flex items-center gap-2 select-none">
-            <NavigationButton text="←" onClick={() => setCurrentIndex(resolveIndex(-1))} />
+                {/* Rendu des tiles */}
+                <div className="flex flex-wrap items-center gap-2">
+                  {/* Div des tiles de gauche */}
+                  <div className="flex flex-col gap-2">
+                    <PokemonSummaryTile pokemon={data[currentIndex]} />
+                    <PokemonSpriteTile
+                      pokemon={data[currentIndex]}
+                      isShiny={shinyState[currentIndex]}
+                      onToggleShiny={() => toggleShiny(currentIndex)}
+                    />
+                  </div>
+                  {/* Div des tiles de droite */}
+                  <div className="flex flex-col gap-2">
+                    <PokemonStatsTile pokemon={data[currentIndex]} />
+                    <PokemonDetailsTile pokemon={data[currentIndex]} />
+                  </div>
+                </div>
+                <NavigationButton text="→" onClick={() => setCurrentIndex(resolveIndex(1))} />
 
-            {/* Rendu des tiles */}
-            <div className="flex flex-wrap items-center gap-2">
-              {/* Rendu des tiles haut gauche */}
-              <div className="flex flex-col gap-2">
-                <PokemonSummaryTile pokemon={data[currentIndex]} />
-                <PokemonSpriteTile pokemon={data[currentIndex]} isShiny={shinyState[currentIndex]} onToggleShiny={() => toggleShiny(currentIndex)} />
+                {/* Pré-rendu des cartes précedentes et suivantes */}
+                {cacheLoaderIndexes.map((index) => (
+                  <CacheLoader pokemon={data[resolveIndex(index)]} key={index} />
+                ))}
               </div>
-
-              {/* Rendu des tiles haut droit */}
-              <div className="flex flex-col gap-2">
-                <PokemonStatsTile pokemon={data[currentIndex]} />
-                <PokemonDetailsTile pokemon={data[currentIndex]} />
-              </div>
-            </div>
-
-            <NavigationButton text="→" onClick={() => setCurrentIndex(resolveIndex(1))} />
-
-            {/* Pré-rendu des cartes précedentes et suivantes */}
-            {cacheLoaderIndexes.map((index) => (
-              <CacheLoader pokemon={data[resolveIndex(index)]} key={index} />
-            ))}
+            )}
           </div>
-        ) : (
-          <p>Chargement...</p>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

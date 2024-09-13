@@ -32,10 +32,10 @@ export function DynamicSearchBar({ onSearch, searchResults, onSelectPokemon }: D
           className="w-full p-2 rounded-lg outline-none bg-transparent"
         />
         {searchQuery && (
-          <div className="bg-white rounded-lg shadow-lg mt-2 max-h-60 overflow-auto">
+          <div className="rounded-lg shadow-lg mt-2 max-h-60 overflow-auto">
             {searchResults.length > 0 ? (
               searchResults.map((pokemon, index) => (
-                <div key={index} className="p-2 hover:bg-gray-200 cursor-pointer" onClick={() => handleSelect(index)}>
+                <div key={index} className="p-2 bg-white my-1 rounded-lg hover:bg-zinc-300 cursor-pointer" onClick={() => handleSelect(index)}>
                   {/* Affiche le nom de chaque Pokémon dans ses trois langues */}
                   {pokemon.name.fr} / {pokemon.name.en} / {pokemon.name.jp}
                 </div>
