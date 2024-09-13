@@ -6,6 +6,7 @@ import { CacheLoader } from "./components/CacheLoader";
 import { DynamicSearchBar } from "./components/DynamicSearchBar";
 import { NavigationButton } from "./components/NavigationButton";
 import { PokemonDetailsTile } from "./components/PokemonDetailsTile";
+import { PokemonEvolutionTile } from "./components/PokemonEvolutionTile";
 import { PokemonSpriteTile } from "./components/PokemonSpriteTile";
 import { PokemonStatsTile } from "./components/PokemonStatsTile";
 import { PokemonSummaryTile } from "./components/PokemonSummaryTile";
@@ -52,46 +53,70 @@ export default function App() {
     setCurrentIndex(selectedIndex);
   };
 
+  const handleSelectEvolution = (index: number) => {
+    setCurrentIndex(index);
+  };
+
   const toggleShiny = (index: number) => {
     setShinyState((prevShinyState) => prevShinyState.map((isShiny, i) => (i === index ? !isShiny : isShiny)));
   };
 
-  function resolveIndex(wishedIndex: number) {
+  function resolveIndex(wishedIndex: number): number {
     return (currentIndex + wishedIndex + data.length) % data.length;
   }
 
+  function resolveEvolutions(): PokemonData[] {
+    const preEvoArray: PokemonData[] = [];
+    const nextEvoArray: PokemonData[] = [];
+
+    // Le Pokémon n'a aucune évolution
+    if (!data[currentIndex].evolution) {
+      return [data[currentIndex]];
+    }
+
+    if (data[currentIndex].evolution?.pre) data[currentIndex].evolution.pre.map((preEvo) => preEvoArray.push(data[preEvo.pokedex_id]));
+    if (data[currentIndex].evolution?.next) data[currentIndex].evolution.next.map((nextEvo) => nextEvoArray.push(data[nextEvo.pokedex_id]));
+
+    return [...preEvoArray, data[currentIndex], ...nextEvoArray];
+  }
+
   return (
-    <div className="relative">
+    <div className="h-full">
       {/* Rendu de l'animation de chargement circualaire */}
-      {isLoading ? (
-        <div className="flex justify-center items-center h-screen">
+      {isLoading || !data ? (
+        <div className="flex justify-center items-center h-full">
           <div className="w-32 h-32 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin" />
         </div>
       ) : (
-        <div>
+        <div className="flex flex-col h-full">
           {/* Rendu de la barre de recherche */}
-          <DynamicSearchBar onSearch={handleSearch} searchResults={searchResults} onSelectPokemon={handleSelectPokemon} />
-          <div className="text-center h-screen content-center mx-auto max-w-fit">
+          <div className="mt-2">
+            <DynamicSearchBar onSearch={handleSearch} searchResults={searchResults} onSelectPokemon={handleSelectPokemon} />
+          </div>
+          <div className="text-center justify-center h-full content-center mx-auto max-w-fit">
             {data.length > 0 && (
               <div className="flex items-center gap-2 select-none">
                 <NavigationButton text="←" onClick={() => setCurrentIndex(resolveIndex(-1))} />
 
                 {/* Rendu des tiles */}
-                <div className="flex flex-wrap items-center gap-2">
-                  {/* Div des tiles de gauche */}
-                  <div className="flex flex-col gap-2">
-                    <PokemonSummaryTile pokemon={data[currentIndex]} />
-                    <PokemonSpriteTile
-                      pokemon={data[currentIndex]}
-                      isShiny={shinyState[currentIndex]}
-                      onToggleShiny={() => toggleShiny(currentIndex)}
-                    />
+                <div className="flex flex-col w-[668px]">
+                  <div className="flex flex-wrap items-center gap-2">
+                    {/* Div des tiles de gauche */}
+                    <div className="flex flex-col gap-2">
+                      <PokemonSummaryTile pokemon={data[currentIndex]} />
+                      <PokemonSpriteTile
+                        pokemon={data[currentIndex]}
+                        isShiny={shinyState[currentIndex]}
+                        onToggleShiny={() => toggleShiny(currentIndex)}
+                      />
+                    </div>
+                    {/* Div des tiles de droite */}
+                    <div className="flex flex-col gap-2">
+                      <PokemonStatsTile pokemon={data[currentIndex]} />
+                      <PokemonDetailsTile pokemon={data[currentIndex]} />
+                    </div>
                   </div>
-                  {/* Div des tiles de droite */}
-                  <div className="flex flex-col gap-2">
-                    <PokemonStatsTile pokemon={data[currentIndex]} />
-                    <PokemonDetailsTile pokemon={data[currentIndex]} />
-                  </div>
+                  <PokemonEvolutionTile pokemons={resolveEvolutions()} onSelectPokemon={handleSelectEvolution} />
                 </div>
                 <NavigationButton text="→" onClick={() => setCurrentIndex(resolveIndex(1))} />
 

@@ -13,7 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body className="bg-zinc-800 text-zinc-800">{children}</body>
+      <body className="bg-zinc-800 text-zinc-800 h-screen overflow-hidden">{children}</body>
     </html>
   );
 }

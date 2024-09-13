@@ -22,7 +22,7 @@ export function DynamicSearchBar({ onSearch, searchResults, onSelectPokemon }: D
   };
 
   return (
-    <div className="w-full flex justify-center absolute top-28">
+    <div className="w-full flex justify-center relative">
       <div className="bg-zinc-100 h-fit p-2 rounded-lg w-[668px]">
         <input
           type="text"
@@ -32,7 +32,7 @@ export function DynamicSearchBar({ onSearch, searchResults, onSelectPokemon }: D
           className="w-full p-2 rounded-lg outline-none bg-transparent"
         />
         {searchQuery && (
-          <div className="rounded-lg shadow-lg mt-2 max-h-60 overflow-auto">
+          <div className="bg-zinc-100 rounded-lg shadow-lg mt-4 max-h-60 overflow-auto absolute w-[650px] z-10">
             {searchResults.length > 0 ? (
               searchResults.map((pokemon, index) => (
                 <div key={index} className="p-2 bg-white my-1 rounded-lg hover:bg-zinc-300 cursor-pointer" onClick={() => handleSelect(index)}>

@@ -33,11 +33,11 @@ export default interface PokemonData {
     multiplier: number;
   }>;
   evolution: {
-    pre: null | {
+    pre: null | Array<{
       pokedex_id: number;
       name: string;
       condition: string;
-    };
+    }>;
     next: Array<{
       pokedex_id: number;
       name: string;
