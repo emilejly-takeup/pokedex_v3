@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PokemonData from "../interfaces/PokemonData";
 
 interface DynamicSearchBarProps {
@@ -9,17 +9,36 @@ interface DynamicSearchBarProps {
 
 export function DynamicSearchBar({ onSearch, searchResults, onSelectPokemon }: DynamicSearchBarProps) {
   const [searchQuery, setSearchQuery] = useState("");
+  const debouncerRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value;
     setSearchQuery(query);
-    onSearch(query); // Appel de la fonction parente pour filtrer les résultats
+
+    // Nettoie le timeout
+    if (debouncerRef.current) {
+      clearTimeout(debouncerRef.current);
+    }
+
+    // Set a new timeout to delay the onSearch call
+    debouncerRef.current = setTimeout(() => {
+      onSearch(query);
+    }, 200); // Délai de 200 ms
   };
 
   const handleSelect = (index: number) => {
-    onSelectPokemon(index); // Appel de la fonction parente pour séléctionner le Pokémon cliqué
-    setSearchQuery(""); // Vide la recherche
+    onSelectPokemon(index);
+    setSearchQuery(""); // Clear search input after selection
   };
+
+  useEffect(() => {
+    // Clean up the timeout on component unmount
+    return () => {
+      if (debouncerRef.current) {
+        clearTimeout(debouncerRef.current);
+      }
+    };
+  }, []);
 
   return (
     <div className="w-full flex justify-center relative">
@@ -36,7 +55,6 @@ export function DynamicSearchBar({ onSearch, searchResults, onSelectPokemon }: D
             {searchResults.length > 0 ? (
               searchResults.map((pokemon, index) => (
                 <div key={index} className="p-2 bg-white my-1 rounded-lg hover:bg-zinc-300 cursor-pointer" onClick={() => handleSelect(index)}>
-                  {/* Affiche le nom de chaque Pokémon dans ses trois langues */}
                   {pokemon.name.fr} / {pokemon.name.en} / {pokemon.name.jp}
                 </div>
               ))

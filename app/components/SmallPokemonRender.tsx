@@ -8,7 +8,6 @@ interface Props {
 export function SmallPokemonRender({ pokemon }: Props) {
   return (
     <Image
-      priority={true}
       width={70}
       height={70}
       src={pokemon.sprites?.regular || "https://via.placeholder.com/100"}

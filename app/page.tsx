@@ -11,6 +11,7 @@ import { PokemonSpriteTile } from "./components/PokemonSpriteTile";
 import { PokemonStatsTile } from "./components/PokemonStatsTile";
 import { PokemonSummaryTile } from "./components/PokemonSummaryTile";
 import PokemonData from "./interfaces/PokemonData";
+import purifyString from "./utils/stringUtils";
 
 export default function App() {
   const [data, setData] = useState<PokemonData[]>([]);
@@ -37,11 +38,11 @@ export default function App() {
 
   const handleSearch = (query: string) => {
     const filteredResults = data.filter((pokemon) => {
-      const lowerQuery = query.toLowerCase();
+      const lowerQuery = purifyString(query.toLowerCase());
       // Vérifie si la requête correspond à un ou plusieurs Pokémon (fr, en, ou jp)
       return (
-        pokemon.name.fr.toLowerCase().includes(lowerQuery) ||
-        pokemon.name.en.toLowerCase().includes(lowerQuery) ||
+        purifyString(pokemon.name.fr.toLowerCase()).includes(lowerQuery) ||
+        purifyString(pokemon.name.en.toLowerCase()).includes(lowerQuery) ||
         pokemon.name.jp.toLowerCase().includes(lowerQuery)
       );
     });
