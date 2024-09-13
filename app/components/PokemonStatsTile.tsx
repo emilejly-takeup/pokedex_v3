@@ -53,6 +53,15 @@ export const PokemonStatsTile: React.FC<Props> = ({ pokemon }) => {
     },
   };
 
+  if (!pokemon.stats) {
+    return (
+      <div className="bg-zinc-100 h-fit p-2 rounded-lg relative">
+        <Radar data={data} options={options} />
+        <p className="text-4xl font-bold absolute top-1/2 left-1/2 translate-x-[-50%]	translate-y-[-50%]">???</p>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-zinc-100 h-fit p-2 rounded-lg">
       <Radar data={data} options={options} />

@@ -12,7 +12,7 @@ export function PokemonDetailsTile({ pokemon }: Props) {
   if (pokemon.pokedex_id === 0) {
     return (
       <div className="bg-zinc-100 p-2 rounded-lg h-[112px] flex justify-center">
-        <p className="self-center">???</p>
+        <p className="self-center text-2xl font-bold">???</p>
       </div>
     );
   }
@@ -29,7 +29,9 @@ export function PokemonDetailsTile({ pokemon }: Props) {
       <p>
         Talent: <strong>{pokemon.talents[0].name}</strong>
       </p>
-      <p>Talent caché: {pokemon.talents[1]?.name || "Aucun"}</p>
+      <p>
+        Talent caché: <strong>{pokemon.talents[1]?.name || "❌"}</strong>
+      </p>
     </div>
   );
 }

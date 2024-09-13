@@ -24,7 +24,7 @@ export function PokemonSummaryTile({ pokemon }: Props) {
         </p>
       </div>
       {/* Types */}
-      <div className="flex gap-1 absolute top-1/4 right-4">
+      <div className="flex absolute top-1/4 right-4">
         {pokemon.types?.length > 0 &&
           pokemon.types.map((type, index) => (
             <div key={index} className="flex">
