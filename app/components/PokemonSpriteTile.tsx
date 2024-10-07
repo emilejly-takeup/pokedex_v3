@@ -1,4 +1,4 @@
-import Image from "next/image";
+/* eslint-disable @next/next/no-img-element */
 import PokemonData from "../interfaces/PokemonData";
 
 interface Props {
@@ -16,9 +16,8 @@ export function PokemonSpriteTile({ pokemon, isShiny, onToggleShiny }: Props) {
     <div className={"w-[344px] h-fit justify-evenly p-2 bg-zinc-100 rounded-lg relative"}>
       {/* Image + Shiny */}
       <div>
-        <Image
+        <img
           className="mt-4"
-          priority={true}
           width={1200}
           height={1200}
           src={isShiny && pokemon.sprites?.shiny ? pokemon.sprites.shiny : pokemon.sprites?.regular || "https://via.placeholder.com/100"}

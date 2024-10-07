@@ -19,6 +19,7 @@ export default function App() {
   const [shinyState, setShinyState] = useState<boolean[]>([]);
   const [searchResults, setSearchResults] = useState<PokemonData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const cacheLoaderIndexes = [-3, -2, -1, 0, 1, 2, 3];
 
@@ -81,6 +82,14 @@ export default function App() {
     return [...preEvoArray, data[currentIndex], ...nextEvoArray];
   }
 
+  const handleNavigation = (direction: number) => {
+    setIsAnimating(true);
+    setTimeout(() => {
+      setCurrentIndex(resolveIndex(direction));
+      setIsAnimating(false);
+    }, 150); // Match this with the CSS animation duration
+  };
+
   return (
     <div className="h-full">
       {/* Rendu de l'animation de chargement circualaire */}
@@ -97,29 +106,32 @@ export default function App() {
           <div className="text-center justify-center h-full content-center mx-auto max-w-fit">
             {data.length > 0 && (
               <div className="flex items-center gap-2 select-none">
-                <NavigationButton text="←" onClick={() => setCurrentIndex(resolveIndex(-1))} />
+                <NavigationButton text="←" onClick={() => handleNavigation(-1)} />
 
-                {/* Rendu des tiles */}
-                <div className="flex flex-col w-[668px]">
-                  <div className="flex flex-wrap items-center gap-2">
-                    {/* Div des tiles de gauche */}
-                    <div className="flex flex-col gap-2">
-                      <PokemonSummaryTile pokemon={data[currentIndex]} />
-                      <PokemonSpriteTile
-                        pokemon={data[currentIndex]}
-                        isShiny={shinyState[currentIndex]}
-                        onToggleShiny={() => toggleShiny(currentIndex)}
-                      />
+                {/* Wrap the main content in a div with animation classes */}
+                <div className={`transition-opacity duration-300 ${isAnimating ? "opacity-0" : "opacity-100"}`}>
+                  <div className="flex flex-col w-[668px]">
+                    <div className="flex flex-wrap items-center gap-2">
+                      {/* Div des tiles de gauche */}
+                      <div className="flex flex-col gap-2">
+                        <PokemonSummaryTile pokemon={data[currentIndex]} />
+                        <PokemonSpriteTile
+                          pokemon={data[currentIndex]}
+                          isShiny={shinyState[currentIndex]}
+                          onToggleShiny={() => toggleShiny(currentIndex)}
+                        />
+                      </div>
+                      {/* Div des tiles de droite */}
+                      <div className="flex flex-col gap-2">
+                        <PokemonStatsTile pokemon={data[currentIndex]} />
+                        <PokemonDetailsTile pokemon={data[currentIndex]} />
+                      </div>
                     </div>
-                    {/* Div des tiles de droite */}
-                    <div className="flex flex-col gap-2">
-                      <PokemonStatsTile pokemon={data[currentIndex]} />
-                      <PokemonDetailsTile pokemon={data[currentIndex]} />
-                    </div>
+                    <PokemonEvolutionTile pokemons={resolveEvolutions()} onSelectPokemon={handleSelectEvolution} />
                   </div>
-                  <PokemonEvolutionTile pokemons={resolveEvolutions()} onSelectPokemon={handleSelectEvolution} />
                 </div>
-                <NavigationButton text="→" onClick={() => setCurrentIndex(resolveIndex(1))} />
+
+                <NavigationButton text="→" onClick={() => handleNavigation(1)} />
 
                 {/* Pré-rendu des cartes précedentes et suivantes */}
                 {cacheLoaderIndexes.map((index) => (

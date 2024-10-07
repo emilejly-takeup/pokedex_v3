@@ -1,4 +1,4 @@
-import Image from "next/image";
+/* eslint-disable @next/next/no-img-element */
 import PokemonData from "../interfaces/PokemonData";
 
 interface Props {
@@ -28,7 +28,7 @@ export function PokemonSummaryTile({ pokemon }: Props) {
         {pokemon.types?.length > 0 &&
           pokemon.types.map((type, index) => (
             <div key={index} className="flex">
-              <Image
+              <img
                 className="rounded-full p-1"
                 width={40}
                 height={40}
