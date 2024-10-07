@@ -87,7 +87,7 @@ export default function App() {
     setTimeout(() => {
       setCurrentIndex(resolveIndex(direction));
       setIsAnimating(false);
-    }, 150); // Match this with the CSS animation duration
+    }, 0); // Match this with the CSS animation duration
   };
 
   return (
